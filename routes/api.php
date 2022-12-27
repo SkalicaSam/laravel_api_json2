@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\User;
+use App\Models\Event;
+use App\Http\Controllers\EventsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,5 +19,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+   return $request->user();
 });
+
+
+Route::get( '/', [EventsController::class, 'list' ]);
+Route::get('events/{id}', [EventsController::class, 'showEventById' ]);
+
+Route::post('events', [EventsController::class, 'create' ]);
+
+Route::put('events/{id}', [EventsController::class, 'updateEventById'] );
+Route::delete('events/{id}', [EventsController::class, 'dellEventById'] );
+
+//Route::put('events/{event}', [EventsController::class, 'updateAutomat'] );
+//Route::delete('events/{event}', [EventsController::class, 'delete'] );
