@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Response;
+use App\Http\Resources\EventResource;
+use App\Http\Resources\EventResourceCollection;
+
 
 class EventsController extends Controller
 {
@@ -32,24 +35,28 @@ class EventsController extends Controller
 
     public function updateEventById($id,Request $request)
     { 
-        //otazka, preco mi neprechadza tato validacia? 
-        // $validated = $request->validate([
-        //     'street' => 'required',
-        //     'city_postcode' => 'required',
-        // ]);
-        
-        $event = Event::find($id);
-        $event->update($request->all());
+        $validated = $request->validate([
+            'city' => 'required',
+            'city_postcode' => 'required',
+        ]);
 
-        return Response::json(Event::find($id));    
+        $event = Event::find($id);
+            if ($event){
+                $event->update($request->all());
+
+                return Response::json(Event::find($id)); 
+            }
+            return 'this Event does not exists';
     }
 
     public function dellEventById($id)
     {
         $event = Event::find($id);
-        $event->delete();
-
-        return Response::json(Event::all());
+        if ($event){
+            $event->delete();
+            return Response::json(Event::all());
+        }
+        return 'Nothing deleted. This Event does not exists before deleting';
     }
 
     //******************************************
@@ -66,4 +73,70 @@ class EventsController extends Controller
         $event->delete();
         return response()->json(null, 204);
     }
+
+
+    //******************************************
+    // function for route-froups:
+
+        public function index()
+        { 
+            //return Response::json(Event::all());
+
+            $events = Event::get()->keyBy->id;
+            //return new EventResourceCollection($events);
+            return EventResource::collection($events);
+            
+        }
+
+        // create is above //Route::get('events/create',
+
+
+    //******************************************  //******************************************
+        //Route::get('events/{event}', [EventsController::class, 'show']);
+        public function show($event)
+        {
+            //return Response::json(Event::find($event));
+
+            $event = Event::find($event);
+            return new EventResource($event);
+
+        }
+
+
+        //Route::put('events/{event}', [EventsController::class, 'update']);
+        public function update($id,Request $request)
+        { 
+            $validated = $request->validate([
+                'city' => 'required',
+                'city_postcode' => 'required',
+            ]);
+          
+            $event = Event::find($id);
+            if ($event){
+                $event->update($request->all());
+
+                return Response::json(Event::find($id)); 
+            }
+            return 'this Event does not exists';
+               
+        }
+
+
+        //Route::delete('events/{event}', [EventsController::class, 'destroy']);
+        public function destroy(Event $event)
+        {
+            if ($event){
+                $event->delete();
+                response()->json(null, 204);
+            }
+            return 'this Event does not exists';
+
+        }
+
+
+
+
+    
+
+
 }

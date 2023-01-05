@@ -18,18 +18,30 @@ use App\Http\Controllers\EventsController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-   return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+// });
 
 
-Route::get( '/', [EventsController::class, 'list' ]);
-Route::get('events/{id}', [EventsController::class, 'showEventById' ]);
+// Route::get( 'events/', [EventsController::class, 'list' ]);
+// Route::get('events/{id}', [EventsController::class, 'showEventById' ]);
 
-Route::post('events', [EventsController::class, 'create' ]);
+// Route::post('events', [EventsController::class, 'create' ]);
 
-Route::put('events/{id}', [EventsController::class, 'updateEventById'] );
-Route::delete('events/{id}', [EventsController::class, 'dellEventById'] );
+// Route::put('events/{id}', [EventsController::class, 'updateEventById'] );
+// Route::delete('events/{id}', [EventsController::class, 'dellEventById'] );
 
 //Route::put('events/{event}', [EventsController::class, 'updateAutomat'] );
 //Route::delete('events/{event}', [EventsController::class, 'delete'] );
+
+
+
+/// work route-groups použi groupu:
+Route::resource('events', EventsController::class)->only(['create', 'index', 'show', 'update', 'destroy']);; 
+
+// ak dam toto api-resource-routes, zrusi mi to funkcie create a edit.
+// Route::apiResource('events', EventsController::class);
+
+
+
+
