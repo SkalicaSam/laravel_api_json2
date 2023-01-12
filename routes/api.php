@@ -34,13 +34,10 @@ use App\Http\Controllers\EventsController;
 //Route::put('events/{event}', [EventsController::class, 'updateAutomat'] );
 //Route::delete('events/{event}', [EventsController::class, 'delete'] );
 
-
-
 /// work route-groups použi groupu:
-Route::resource('events', EventsController::class)->only(['create', 'index', 'show', 'update', 'destroy']);; 
+//Route::resource('events', EventsController::class)->only(['create', 'index', 'show', 'update', 'destroy']);; 
 
-// ak dam toto api-resource-routes, zrusi mi to funkcie create a edit.
-// Route::apiResource('events', EventsController::class);
+Route::apiResource('events', EventsController::class);
 
 
 

@@ -17,7 +17,8 @@ class EventResource extends JsonResource
          //return parent::toArray($request);
         return [
             'id' => $this->id,
-            'city' => $this->city
+            'city' => $this->city,
+            'city_postcode' => $this->city_postcode
         ];
     }
 }
